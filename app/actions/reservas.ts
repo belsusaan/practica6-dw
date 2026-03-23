@@ -76,7 +76,7 @@ export async function validarDisponibilidad(
     where: {
       fecha: {
         gte: new Date(fechaBusqueda.getTime() - duracionReservada), // busca x minutos antes en las reservas
-        lte: new Date(fechaBusqueda.getTime() + duracionReservada), // busca 10 minutos despues en las reservas
+        lte: new Date(fechaBusqueda.getTime() + duracionReservada), // busca x minutos despues en las reservas
       },
     },
   });

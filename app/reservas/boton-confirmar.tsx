@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { botonPrimario, botonSecundario } from "../lib/estilo";
+import { botonSecundario } from "../lib/estilo";
 import { confirmarReserva } from "../actions/reservas";
 
 export function BotonConfirmarReserva({ id }: { id: number }) {
