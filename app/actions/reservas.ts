@@ -12,23 +12,6 @@ const EsquemaReserva = z.object({
   servicioId: z.coerce.number({ message: "Debe seleccionar un servicio." }),
 });
 
-// función para validar si la la hora y fecha está ocupada
-export async function validarDisponibilidad(
-  fechaRecibida: string,
-  duracion: number,
-) {
-  const fechaBusqueda = new Date(fechaRecibida);
-  const duracionReservada = duracion * 60 * 1000; // min a milisegundos
-  return await prisma.reserva.findFirst({
-    where: {
-      fecha: {
-        gte: new Date(fechaBusqueda.getTime() - duracionReservada), // busca x minutos antes en las reservas
-        lte: new Date(fechaBusqueda.getTime() + duracionReservada), // busca 10 minutos despues en las reservas
-      },
-    },
-  });
-}
-
 export async function crearReserva(_estadoPrevio: any, formData: FormData) {
   const campos = EsquemaReserva.safeParse({
     nombre: formData.get("nombre"),
@@ -80,6 +63,23 @@ export async function crearReserva(_estadoPrevio: any, formData: FormData) {
 
   revalidatePath("/reservas");
   redirect("/reservas");
+}
+
+// función para validar si la la hora y fecha está ocupada
+export async function validarDisponibilidad(
+  fechaRecibida: string,
+  duracion: number,
+) {
+  const fechaBusqueda = new Date(fechaRecibida);
+  const duracionReservada = duracion * 60 * 1000; // min a milisegundos
+  return await prisma.reserva.findFirst({
+    where: {
+      fecha: {
+        gte: new Date(fechaBusqueda.getTime() - duracionReservada), // busca x minutos antes en las reservas
+        lte: new Date(fechaBusqueda.getTime() + duracionReservada), // busca 10 minutos despues en las reservas
+      },
+    },
+  });
 }
 
 export async function eliminarReserva(id: number) {
